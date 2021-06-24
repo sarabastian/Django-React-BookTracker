@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 
 const BookContainer = () => {
   const [books, setBooks] = React.useState([]);
-  const [checked, changeCheck] = React.useState(false);
+  // const [checked, changeCheck] = React.useState(false);
 
   useEffect(() => {
     fetch("http://localhost:2000/api/books/")
@@ -69,7 +69,7 @@ const BookContainer = () => {
               <Book
                 book={book}
                 key={book.title}
-                checked={checked}
+                // checked={checked}
                 handleChange={handleChange}
               />
             ))}
