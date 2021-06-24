@@ -14,6 +14,7 @@ const Book = ({ book, handleChange }) => {
       <TableCell align="right">
         {book.read ? (
           <Checkbox
+            checked
             onChange={() => handleChange(book)}
             inputProps={{ "aria-label": "primary checkbox" }}
           />

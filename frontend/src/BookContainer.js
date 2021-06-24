@@ -27,7 +27,6 @@ const BookContainer = () => {
   }, []);
 
   const handleChange = (book) => {
-    changeCheck(!checked);
     fetch(`http://localhost:2000/api/books/${book.id}/`, {
       method: "PATCH",
       headers: {
@@ -37,7 +36,7 @@ const BookContainer = () => {
       body: JSON.stringify({
         title: book.title,
         description: book.description,
-        read: !checked,
+        read: !book.read,
       }),
     })
       .then((r) => r.json())
