@@ -3,7 +3,6 @@ from .models import Book, Author
 
 
 class AuthorSerializer(serializers.ModelSerializer):
-    # books = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Author
@@ -11,7 +10,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 
 class BookSerializer(serializers.ModelSerializer):
-    # author = serializers.ReadOnlyField(source='author.first_name')
+
     author = AuthorSerializer(many=False, read_only=True)
 
     class Meta:
