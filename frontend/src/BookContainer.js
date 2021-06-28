@@ -9,6 +9,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import { IconButton, Input, Button } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 
 const useStyles = makeStyles({
   table: {
@@ -26,7 +28,7 @@ const BookContainer = () => {
       .then((books) => setBooks(books));
   }, []);
 
-  const handleChange = (book) => {
+  const handleReadChange = (book) => {
     fetch(`http://localhost:2000/api/books/${book.id}/`, {
       method: "PATCH",
       headers: {
@@ -34,8 +36,6 @@ const BookContainer = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: book.title,
-        description: book.description,
         read: !book.read,
       }),
     })
@@ -49,11 +49,101 @@ const BookContainer = () => {
       .then((books) => setBooks(books));
   };
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(!open);
+  };
+
+  const addBook = (e) => {
+    e.target.preventDefault();
+    fetch("http://localhost:2000/api/books/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        title: newTitle,
+        description: newDescription,
+        read: false,
+      }),
+    })
+      .then((r) => r.json())
+      .then((r) => refreshList());
+  };
+
   const classes = useStyles();
+  const [newTitle, setNewTitle] = React.useState("");
+  const [newDescription, setNewDescription] = React.useState("");
+  const [authorFirst, setNewAuthorFirst] = React.useState("");
+  const [authorLast, setNewAuthorLast] = React.useState("");
+
+  const handleNewTitle = (e) => {
+    setNewTitle(e.target.value);
+  };
+
+  const handleNewDesc = (e) => {
+    setNewDescription(e.target.value);
+  };
+
+  const handleNewAuthorFirst = (e) => {
+    setNewAuthorFirst(e.target.value);
+  };
+
+  const handleNewAuthorLast = (e) => {
+    setNewAuthorLast(e.target.value);
+  };
+
+  const author = authorFirst + authorLast;
 
   return (
     <>
-      <h2>Book Reading List </h2>
+      <h2>Summer Reading List </h2>
+      <IconButton onClick={handleOpen}>
+        <AddIcon />
+      </IconButton>
+      {open ? (
+        <form
+          onSubmit={addBook}
+          className={classes.root}
+          noValidate
+          autoComplete="off"
+        >
+          <div>
+            <Input
+              onChange={handleNewTitle}
+              placeholder="Title"
+              defaultValue=""
+              inputProps={{ "aria-label": "description" }}
+            />
+          </div>
+          <div>
+            <Input
+              onChange={handleNewDesc}
+              placeholder="Description"
+              defaultValue=""
+              inputProps={{ "aria-label": "description" }}
+            />
+          </div>
+          {/* <div>
+            <Input
+              onChange={handleNewAuthorFirst}
+              placeholder="Author First Name"
+              defaultValue=""
+              inputProps={{ "aria-label": "description" }}
+            />
+
+            <Input
+              onChange={handleNewAuthorLast}
+              placeholder="Author Last Name"
+              defaultValue=""
+              inputProps={{ "aria-label": "description" }}
+            />
+          </div> */}
+          <button onClick={addBook}>Submit</button>
+        </form>
+      ) : null}
       <TableContainer component={Paper} className="container">
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
@@ -69,8 +159,7 @@ const BookContainer = () => {
               <Book
                 book={book}
                 key={book.title}
-                // checked={checked}
-                handleChange={handleChange}
+                handleReadChange={handleReadChange}
               />
             ))}
           </TableBody>

@@ -1,7 +1,7 @@
 import React from "react";
 import { TableCell, TableRow, Checkbox } from "@material-ui/core";
 
-const Book = ({ book, handleChange }) => {
+const Book = ({ book, handleReadChange }) => {
   return (
     <TableRow key={book.title}>
       <TableCell component="th" scope="row">
@@ -15,12 +15,12 @@ const Book = ({ book, handleChange }) => {
         {book.read ? (
           <Checkbox
             checked
-            onChange={() => handleChange(book)}
+            onChange={() => handleReadChange(book)}
             inputProps={{ "aria-label": "primary checkbox" }}
           />
         ) : (
           <Checkbox
-            onChange={() => handleChange(book)}
+            onChange={() => handleReadChange(book)}
             inputProps={{ "aria-label": "primary checkbox" }}
           />
         )}
