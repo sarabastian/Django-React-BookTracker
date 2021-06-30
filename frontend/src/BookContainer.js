@@ -55,8 +55,25 @@ const BookContainer = () => {
     setOpen(!open);
   };
 
+  const addAuthor = (e) => {
+    fetch("http://localhost:2000/api/authors/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        first_name: authorFirst,
+        last_name: authorLast,
+      }),
+    })
+      .then((r) => r.json())
+      .then((data) => setNewAuthorID(data.id));
+  };
+
   const addBook = (e) => {
-    e.target.preventDefault();
+    e.preventDefault();
+    addAuthor();
     fetch("http://localhost:2000/api/books/", {
       method: "POST",
       headers: {
@@ -67,10 +84,12 @@ const BookContainer = () => {
         title: newTitle,
         description: newDescription,
         read: false,
+        author: author,
       }),
     })
       .then((r) => r.json())
       .then((r) => refreshList());
+    handleOpen();
   };
 
   const classes = useStyles();
@@ -78,6 +97,7 @@ const BookContainer = () => {
   const [newDescription, setNewDescription] = React.useState("");
   const [authorFirst, setNewAuthorFirst] = React.useState("");
   const [authorLast, setNewAuthorLast] = React.useState("");
+  const [authorID, setNewAuthorID] = React.useState(null);
 
   const handleNewTitle = (e) => {
     setNewTitle(e.target.value);
@@ -95,8 +115,12 @@ const BookContainer = () => {
     setNewAuthorLast(e.target.value);
   };
 
-  const author = authorFirst + authorLast;
-
+  const author = {
+    id: authorID,
+    first_name: authorFirst,
+    last_name: authorLast,
+  };
+  console.log(author);
   return (
     <>
       <h2>Summer Reading List </h2>
@@ -126,13 +150,14 @@ const BookContainer = () => {
               inputProps={{ "aria-label": "description" }}
             />
           </div>
-          {/* <div>
+          <div>
             <Input
               onChange={handleNewAuthorFirst}
               placeholder="Author First Name"
               defaultValue=""
               inputProps={{ "aria-label": "description" }}
             />
+            <br></br>
 
             <Input
               onChange={handleNewAuthorLast}
@@ -140,8 +165,8 @@ const BookContainer = () => {
               defaultValue=""
               inputProps={{ "aria-label": "description" }}
             />
-          </div> */}
-          <button onClick={addBook}>Submit</button>
+          </div>
+          <button type="submit">Submit</button>
         </form>
       ) : null}
       <TableContainer component={Paper} className="container">
