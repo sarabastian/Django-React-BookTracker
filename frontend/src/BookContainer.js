@@ -21,6 +21,12 @@ const useStyles = makeStyles({
 const BookContainer = () => {
   const [books, setBooks] = React.useState([]);
   // const [checked, changeCheck] = React.useState(false);
+  const classes = useStyles();
+  const [newTitle, setNewTitle] = React.useState("");
+  const [newDescription, setNewDescription] = React.useState("");
+  const [authorFirst, setNewAuthorFirst] = React.useState("");
+  const [authorLast, setNewAuthorLast] = React.useState("");
+  const [newAuthor, setNewAuthor] = React.useState({});
 
   useEffect(() => {
     fetch("http://localhost:2000/api/books/")
@@ -55,7 +61,7 @@ const BookContainer = () => {
     setOpen(!open);
   };
 
-  const addAuthor = (e) => {
+  const addAuthor = () => {
     fetch("http://localhost:2000/api/authors/", {
       method: "POST",
       headers: {
@@ -68,7 +74,7 @@ const BookContainer = () => {
       }),
     })
       .then((r) => r.json())
-      .then((data) => setNewAuthorID(data.id));
+      .then((data) => setNewAuthor(data));
   };
 
   const addBook = (e) => {
@@ -84,20 +90,13 @@ const BookContainer = () => {
         title: newTitle,
         description: newDescription,
         read: false,
-        author: author,
+        author: newAuthor.id,
       }),
     })
-      .then((r) => r.json())
-      .then((r) => refreshList());
+      .then((r) => r.text())
+      .then((r) => console.log(r));
     handleOpen();
   };
-
-  const classes = useStyles();
-  const [newTitle, setNewTitle] = React.useState("");
-  const [newDescription, setNewDescription] = React.useState("");
-  const [authorFirst, setNewAuthorFirst] = React.useState("");
-  const [authorLast, setNewAuthorLast] = React.useState("");
-  const [authorID, setNewAuthorID] = React.useState(null);
 
   const handleNewTitle = (e) => {
     setNewTitle(e.target.value);
@@ -115,12 +114,12 @@ const BookContainer = () => {
     setNewAuthorLast(e.target.value);
   };
 
-  const author = {
-    id: authorID,
-    first_name: authorFirst,
-    last_name: authorLast,
-  };
-  console.log(author);
+  // const author = {
+  //   id: authorID,
+  //   first_name: authorFirst,
+  //   last_name: authorLast,
+  // };
+  // console.log(author);
   return (
     <>
       <h2>Summer Reading List </h2>
@@ -166,7 +165,7 @@ const BookContainer = () => {
               inputProps={{ "aria-label": "description" }}
             />
           </div>
-          <button type="submit">Submit</button>
+          <br></br> <button type="submit">Submit</button>
         </form>
       ) : null}
       <TableContainer component={Paper} className="container">

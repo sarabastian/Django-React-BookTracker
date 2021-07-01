@@ -2,6 +2,7 @@ import React from "react";
 import { TableCell, TableRow, Checkbox } from "@material-ui/core";
 
 const Book = ({ book, handleReadChange }) => {
+  // console.log(book.author.first_name);
   return (
     <TableRow key={book.title}>
       <TableCell component="th" scope="row">
