@@ -93,8 +93,8 @@ const BookContainer = () => {
         author: newAuthor.id,
       }),
     })
-      .then((r) => r.text())
-      .then((r) => console.log(r));
+      .then((r) => r.json())
+      .then(() => refreshList());
     handleOpen();
   };
 
