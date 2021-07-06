@@ -79,7 +79,7 @@ const BookContainer = () => {
 
   const addBook = (e) => {
     e.preventDefault();
-    addAuthor();
+    // addAuthor();
     fetch("http://localhost:2000/api/books/", {
       method: "POST",
       headers: {
@@ -90,7 +90,7 @@ const BookContainer = () => {
         title: newTitle,
         description: newDescription,
         read: false,
-        author: newAuthor.id,
+        author: { first_name: authorFirst, last_name: authorLast },
       }),
     })
       .then((r) => r.json())
@@ -119,7 +119,7 @@ const BookContainer = () => {
   //   first_name: authorFirst,
   //   last_name: authorLast,
   // };
-  // console.log(author);
+  console.log(newAuthor);
   return (
     <>
       <h2>Summer Reading List </h2>
