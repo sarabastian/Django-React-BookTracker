@@ -15,7 +15,7 @@ class Book(models.Model):
     description = models.TextField()
     read = models.BooleanField(default=False)
     author = models.ForeignKey(
-        Author, on_delete=models.CASCADE, null=True, related_name='author')
+        Author, on_delete=models.CASCADE, null=True)
 
  # renames the instances of the model with their title name
     def _str_(self):
